@@ -6,6 +6,18 @@ const Client = require("bitcoin-core");
 
 const { construct, broadcast } = require("./cutxo");
 
+const HELP = `Consolidates UTXO on your bitcoin node.
+
+    cutxo --username root --password toor --amount 0.0001 --fee 2
+
+  --help     Show help.
+  --host     Host to connect to. Default is "localhost".
+  --port     Port where bitcoin json-rpc is listerning. Default is "8332".
+  --limit    Limit number of inputs.
+  --amount   Maximum amount for UTXO to include in transaction. Default is "0.0001".
+  --fee      Fee for new transaction in Satoshi/byte. Default is "1".
+`
+
 const parseArgs = () => {
     const args = arg(
         {
@@ -22,7 +34,7 @@ const parseArgs = () => {
     );
 
     if (args["--help"]) {
-        console.log("HELP");
+        console.log(HELP);
         process.exit();
     }
 
