@@ -26,12 +26,10 @@ describe("Trades", () => {
             break;
         }
         await client.generate(110);
-        console.log("getBlockchainInfo", await client.getBlockchainInfo());
-        console.log("getNetworkInfo", await client.getNetworkInfo());
     });
 
     it("empty unspent", async () => {
-        expect(construct({ client, maximumAmount: 0.001, feeRate: 0.00001024 })).rejects.toThrow(
+        expect(construct({ client, maximumAmount: 0.001, feeRate: 1 })).rejects.toThrow(
             "No suitable UTXO found"
         );
     });
@@ -46,7 +44,7 @@ describe("Trades", () => {
         await client.sendMany("", send);
         await client.generate(1);
 
-        tx = await construct({ client, maximumAmount: 0.001, feeRate: 0.00001024 });
+        tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
         expect(tx.amount).toBe(0.003);
         expect(typeof tx.address).toBe("string");
         expect(tx.fee).toBeLessThan(0.001);
@@ -81,7 +79,7 @@ describe("Trades", () => {
         await client.generate(1);
 
         // first transaction
-        const tx = await construct({ client, maximumAmount: 0.001, feeRate: 0.00001024 });
+        const tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
         expect(tx.amount).toBeGreaterThan(2);
         expect(tx.amount).toBeLessThan(3);
         expect(typeof tx.address).toBe("string");
@@ -95,7 +93,7 @@ describe("Trades", () => {
         expect(typeof txid).toBe("string");
 
         // second transaction
-        const tx2 = await construct({ client, maximumAmount: 0.001, feeRate: 0.00001024 });
+        const tx2 = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
         const txid2 = await broadcast({ client, hex: tx2.hex });
 
         await client.generate(1);

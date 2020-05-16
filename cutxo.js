@@ -34,7 +34,6 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
         const inputs = unspentSlice.map((u) => ({
             txid: u.txid,
             vout: u.vout,
-            // sequence: 4294967295 - 1
         }));
         amount = unspentSlice
             .reduce((prev, { amount }) => prev.plus(amount), new BN(0))
@@ -58,8 +57,8 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
         }
         fee = res.fee;
         if (sliceTo === end || end - start <= 1) {
-            break;
             console.log(" success");
+            break;
         }
         start = sliceTo;
         sliceTo = start + Math.floor((end - start) / 2);
