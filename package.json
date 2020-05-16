@@ -1,6 +1,6 @@
 {
   "name": "consolidate-utxo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tool which helps consolidate your unspent transactions outputs",
   "main": "cutxo.js",
   "scripts": {
@@ -26,6 +26,6 @@
     "prettier": "^2.0.5"
   },
   "jest": {
-    "testTimeout": 300000
+    "testTimeout": 3600000
   }
 }
