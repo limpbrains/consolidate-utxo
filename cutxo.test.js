@@ -7,11 +7,12 @@ const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 describe("Trades", () => {
     const client = new Client({
+        host: "bitcoind",
         port: 43782,
         username: "root",
         password: "toor",
     });
-    beforeEach(async () => {
+    beforeAll(async () => {
         // wait till the wallet is ready
         while (true) {
             try {
@@ -28,10 +29,14 @@ describe("Trades", () => {
         await client.generate(110);
     });
 
+    afterAll(async () => {
+        await client.stop();
+    });
+
     it("empty unspent", async () => {
-        expect(construct({ client, maximumAmount: 0.001, feeRate: 1 })).rejects.toThrow(
-            "No suitable UTXO found"
-        );
+        expect(
+            construct({ client, maximumAmount: 0.001, feeRate: 1 })
+        ).rejects.toThrow("No suitable UTXO found");
     });
 
     it("3 to one", async () => {
@@ -79,7 +84,11 @@ describe("Trades", () => {
         await client.generate(1);
 
         // first transaction
-        const tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
+        const tx = await construct({
+            client,
+            maximumAmount: 0.001,
+            feeRate: 1,
+        });
         expect(tx.amount).toBeGreaterThan(2);
         expect(tx.amount).toBeLessThan(3);
         expect(typeof tx.address).toBe("string");
@@ -93,7 +102,11 @@ describe("Trades", () => {
         expect(typeof txid).toBe("string");
 
         // second transaction
-        const tx2 = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
+        const tx2 = await construct({
+            client,
+            maximumAmount: 0.001,
+            feeRate: 1,
+        });
         const txid2 = await broadcast({ client, hex: tx2.hex });
 
         await client.generate(1);
