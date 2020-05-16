@@ -48,11 +48,6 @@ const parseArgs = () => {
         feeRate: args["--fee"] || 1,
     };
 
-    if (!options.username) {
-        console.error("Username is missing");
-        process.exit(1);
-    }
-
     return options;
 };
 
