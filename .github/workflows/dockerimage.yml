@@ -15,4 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: run tests
-      run: docker-compose up
+    - run: npm i
+    - run: docker-compose up
