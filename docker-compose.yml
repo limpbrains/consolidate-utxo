@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-  testproject:
-    build: .
-    command: npm test
-    volumes:
-      - .:/code
-    depends_on:
-      - bitcoind
-
   bitcoind:
     image: btcpayserver/bitcoin:0.17.0
     environment:

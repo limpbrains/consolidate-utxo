@@ -7,7 +7,7 @@ const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 describe("Trades", () => {
     const client = new Client({
-        host: "bitcoind",
+        host: "localhost",
         port: 43782,
         username: "root",
         password: "toor",
