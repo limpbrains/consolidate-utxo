@@ -27,7 +27,7 @@ describe("Trades", () => {
             }
             ready = true
         }
-        await client.generate(110);
+        await client.generateToAddress(110, await client.getNewAddress());
     });
 
     afterAll(async () => {
@@ -48,7 +48,8 @@ describe("Trades", () => {
         }
 
         await client.sendMany("", send);
-        await client.generate(1);
+
+        await client.generateToAddress(1, await client.getNewAddress());
 
         const tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
         expect(tx.amountInput).toBe(0.003);
@@ -62,10 +63,7 @@ describe("Trades", () => {
         const txid = await broadcast({ client, hex: tx.hex });
         expect(typeof txid).toBe("string");
 
-        // console.info('tx.hex')
-        // console.info(tx.hex)
-
-        await client.generate(1);
+        await client.generateToAddress(1, await client.getNewAddress());
 
         const unspent = await client.listUnspent(1, 9999999, [], true, {
             maximumAmount: 0.001,
@@ -83,7 +81,8 @@ describe("Trades", () => {
                 send = {};
             }
         }
-        await client.generate(1);
+
+        await client.generateToAddress(1, await client.getNewAddress());
 
         // first transaction
         const tx = await construct({
@@ -112,7 +111,7 @@ describe("Trades", () => {
         });
         await broadcast({ client, hex: tx2.hex });
 
-        await client.generate(1);
+        await client.generateToAddress(1, await client.getNewAddress());
         // after secod tx unspent should be 0
         const unspent = await client.listUnspent(1, 9999999, [], true, {
             maximumAmount: 0.001,
