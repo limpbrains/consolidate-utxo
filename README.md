@@ -3,13 +3,15 @@ Tool which helps consolidate your unspent transactions outputs
 
 ![test status](https://github.com/limpbrains/consolidate-utxo/workflows/Regtest%20test/badge.svg)
 
-When you have a long-running bitcoin wallet with big transaction history, you might start getting errors like `Transaction too large` during the withdrawal. That's because you have a lot small UTXOs (Unspent transaction outputs) and when bitcoin node tries to build transaction it became too large. To fix this you need to Consolidate your UTXO set. 
+When you have a long-running bitcoin wallet with big transaction history, you might start getting errors like `Transaction too large` during the withdrawal. That's because you have a lot small UTXOs (Unspent transaction outputs) and when bitcoin node tries to build transaction it became too large. To fix this you need to Consolidate your UTXO set.
+
+*Designed for Bitcoin version >= 0.17*
 
 ## How it works
 
 consolidate-utxo asks all unspent outputs from your bitcoin node, filters them by amount (`0.0001` by default) and tries to build a transaction to send them all back to the node in one output. If the resulting transaction is too big, it will lower number of inputs and try again.
 
-## How to install 
+## How to install
 
 This program is written in JavaScript and to run in you need NodeJS to be installed on your system.
 
@@ -45,9 +47,9 @@ rpcuser=root
 rpcpassword=toor
 ```
 
-Then you can run 
+Then you can run
 ```bash
-consolidate-utxo --username root --password toor 
+consolidate-utxo --username root --password toor
 ```
 
 Default transaction fee is set to the lowest possible value - 1 sat/byte. You can change it by `--fee` parameter
