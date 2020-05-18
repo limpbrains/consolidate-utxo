@@ -71,12 +71,13 @@ describe("Trades", () => {
         expect(unspent).toHaveLength(0);
     });
 
-    it("3000 inputs", async () => {
+    it("1500 inputs", async () => {
         let send = {};
-        for (let i of [...Array(3000)].map((_, i) => i + 1)) {
+        for (let i of [...Array(1500)].map((_, i) => i + 1)) {
             const address = await client.getNewAddress();
             send[address] = 0.001;
             if (i % 500 === 0) {
+                console.info('sendMany')
                 await client.sendMany("", send);
                 send = {};
             }
@@ -90,15 +91,17 @@ describe("Trades", () => {
             maximumAmount: 0.001,
             feeRate: 1,
         });
-        expect(tx.amountInput).toBeGreaterThan(2);
-        expect(tx.amountInput).toBeLessThan(3);
+        const { hex, ...kkk} = tx
+        console.info('kkk', kkk)
+        expect(tx.amountInput).toBeGreaterThan(0.8);
+        expect(tx.amountInput).toBeLessThan(1.3);
         expect(tx.amountOutput).toBeLessThan(tx.amountInput);
         expect(typeof tx.address).toBe("string");
         expect(typeof tx.fee).toBe("number");
         expect(typeof tx.hex).toBe("string");
-        expect(tx.inputsTotal).toBe(3000);
-        expect(tx.inputsUsed).toBeGreaterThan(2000);
-        expect(tx.inputsUsed).toBeLessThan(3000);
+        expect(tx.inputsTotal).toBe(1500);
+        expect(tx.inputsUsed).toBeGreaterThan(800);
+        expect(tx.inputsUsed).toBeLessThan(1300);
 
         const txid = await broadcast({ client, hex: tx.hex });
         expect(typeof txid).toBe("string");

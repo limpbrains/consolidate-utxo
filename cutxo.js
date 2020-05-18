@@ -20,7 +20,8 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
     console.log("Output address:", address);
     let amount;
     let fee;
-    let res;
+    let hex;
+    let vsize;
     let start = 0;
     let end = unspent.length;
     let sliceTo = end;
@@ -28,6 +29,7 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
 
     console.info("Picking up maximum number of inputs...");
     while (!success) {
+        let res;
         console.info(" trying:", sliceTo);
         const unspentSlice = unspent.slice(0, sliceTo);
         const inputs = unspentSlice.map((u) => ({
@@ -55,6 +57,29 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
             throw e;
         }
         fee = res.fee;
+
+        // signing psbt
+        res = await client.walletProcessPsbt(res.psbt);
+        if (!res.complete) {
+            throw new Error("Error during walletprocesspsbt");
+        }
+
+        // converting psbt to hex
+        res = await client.finalizePsbt(res.psbt);
+        if (!res.complete) {
+            throw new Error("Error during finalizePsbt");
+        }
+        hex = res.hex
+
+        // checking tx vsize show be below 100000
+        res = await client.decodeRawTransaction(hex);
+        vsize = res.vsize
+        if (vsize > 100000) {
+            end = sliceTo;
+            sliceTo = start + Math.floor((end - start) / 2);
+            continue;
+        }
+
         if (sliceTo === end || end - start <= 1) {
             console.log(" success");
             success = true;
@@ -62,18 +87,6 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
             start = sliceTo;
             sliceTo = start + Math.floor((end - start) / 2);
         }
-    }
-
-    console.log("Signing transaction...");
-    res = await client.walletProcessPsbt(res.psbt);
-    if (!res.complete) {
-        throw new Error("Error during walletprocesspsbt");
-    }
-
-    console.log("Finalizing transaction...");
-    res = await client.finalizePsbt(res.psbt);
-    if (!res.complete) {
-        throw new Error("Error during finalizePsbt");
     }
 
     console.log("Transaction created");
@@ -85,7 +98,7 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
         amountInput: amount,
         amountOutput,
         fee,
-        hex: res.hex,
+        hex,
         inputsUsed: sliceTo,
         inputsTotal,
     };
