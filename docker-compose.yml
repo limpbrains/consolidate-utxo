@@ -9,6 +9,7 @@ services:
         rpcuser=root
         rpcpassword=toor
         rpcport=43782
+        rpcbind=0.0.0.0:43782
         rpcworkqueue=99999
     ports:
       - "43782:43782"
