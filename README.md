@@ -52,7 +52,7 @@ Then you can run
 consolidate-utxo --username root --password toor
 ```
 
-Default transaction fee is set to the lowest possible value - 1 sat/byte. You can change it by `--fee` parameter
+Default transaction fee is set to the lowest possible value - 1 sat/byte. So before broadcasting transaction make sure mempool is empty and it can be confirmed in a reasonable amount of time. You can change fee by `--fee` parameter. 
 
 Other options:
 
@@ -120,6 +120,10 @@ b4a568966f3b7f981ad2f98c12adead32066f69a816c390218597dfc096cf99f
 ```
 
 You can check resulting transaction on [blockchain explorer](https://blockstream.info/testnet/tx/b4a568966f3b7f981ad2f98c12adead32066f69a816c390218597dfc096cf99f)
+
+## Altcoins
+
+This script probably should work with Litecoin 0.17, since it has PSBT support but I didn't test it.
 
 ## License
 
