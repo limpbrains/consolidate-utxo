@@ -91,8 +91,6 @@ describe("Trades", () => {
             maximumAmount: 0.001,
             feeRate: 1,
         });
-        const { hex, ...kkk} = tx
-        console.info('kkk', kkk)
         expect(tx.amountInput).toBeGreaterThan(0.8);
         expect(tx.amountInput).toBeLessThan(1.3);
         expect(tx.amountOutput).toBeLessThan(tx.amountInput);
