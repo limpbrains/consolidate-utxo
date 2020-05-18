@@ -16,6 +16,8 @@ const HELP = `Consolidates UTXO on your bitcoin node.
   --limit    Limit number of inputs.
   --amount   Maximum amount for UTXO to include in transaction. Default is "0.0001".
   --fee      Fee for new transaction in Satoshi/byte. Default is "1".
+
+  Designed for Bitcoin version >= 0.17
 `
 
 const parseArgs = () => {
