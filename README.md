@@ -78,6 +78,47 @@ docker-compose up -d
 npm test
 ```
 
+## Example
+
+Here is example of running consolidate-utxo against node with 4000 UTXOs on testnet:
+
+```bash
+$ consolidate-utxo --username root --password toor --amount 0.001 --port 18332
+Output address: 2MyrmzDNT7Xe8QqYwWQtQFsB73TeYg1Q3jm
+Picking up maximum number of inputs...
+ trying: 4775
+ trying: 2387
+ trying: 3581
+ trying: 2984
+ trying: 2685
+ trying: 2536
+ trying: 2461
+ trying: 2424
+ trying: 2442
+ trying: 2433
+ trying: 2437
+ trying: 2439
+ trying: 2438
+ trying: 2437
+ success
+Signing transaction...
+Finalizing transaction...
+Transaction created
+
+Number of inputs: 2437
+Inputs total amount: 2.437
+Output amount: 2.43473489
+Fee: 0.00226511
+Output address: 2MyrmzDNT7Xe8QqYwWQtQFsB73TeYg1Q3jm
+
+Are you sure you want to broadcast the transaction? yes
+Broadcasting transaction...
+Done!
+b4a568966f3b7f981ad2f98c12adead32066f69a816c390218597dfc096cf99f
+```
+
+You can check resulting transaction on [blockchain explorer](https://blockstream.info/testnet/tx/b4a568966f3b7f981ad2f98c12adead32066f69a816c390218597dfc096cf99f)
+
 ## License
 
 MIT
