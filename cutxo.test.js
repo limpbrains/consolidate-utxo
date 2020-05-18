@@ -14,7 +14,8 @@ describe("Trades", () => {
     });
     beforeAll(async () => {
         // wait till the wallet is ready
-        while (true) {
+        let ready = false
+        while (!ready) {
             try {
                 await client.ping();
             } catch (e) {
@@ -24,7 +25,7 @@ describe("Trades", () => {
                 }
                 throw e;
             }
-            break;
+            ready = true
         }
         await client.generate(110);
     });
@@ -49,7 +50,7 @@ describe("Trades", () => {
         await client.sendMany("", send);
         await client.generate(1);
 
-        tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
+        const tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
         expect(tx.amountInput).toBe(0.003);
         expect(tx.amountOutput).toBeLessThan(tx.amountInput);
         expect(typeof tx.address).toBe("string");
@@ -109,7 +110,7 @@ describe("Trades", () => {
             maximumAmount: 0.001,
             feeRate: 1,
         });
-        const txid2 = await broadcast({ client, hex: tx2.hex });
+        await broadcast({ client, hex: tx2.hex });
 
         await client.generate(1);
         // after secod tx unspent should be 0

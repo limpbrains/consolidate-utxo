@@ -1,10 +1,8 @@
 const BigNumber = require("bignumber.js");
 
-BN = BigNumber.clone({ DECIMAL_PLACES: 8 });
+const BN = BigNumber.clone({ DECIMAL_PLACES: 8 });
 
 async function construct({ client, maximumAmount, limit, feeRate }) {
-    const { chain } = await client.getBlockchainInfo();
-
     let unspent = await client.listUnspent(1, 9999999, [], true, {
         maximumAmount,
     });
@@ -26,9 +24,10 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
     let start = 0;
     let end = unspent.length;
     let sliceTo = end;
+    let success = false;
 
     console.info("Picking up maximum number of inputs...");
-    do {
+    while (!success) {
         console.info(" trying:", sliceTo);
         const unspentSlice = unspent.slice(0, sliceTo);
         const inputs = unspentSlice.map((u) => ({
@@ -58,11 +57,12 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
         fee = res.fee;
         if (sliceTo === end || end - start <= 1) {
             console.log(" success");
-            break;
+            success = true;
+        } else {
+            start = sliceTo;
+            sliceTo = start + Math.floor((end - start) / 2);
         }
-        start = sliceTo;
-        sliceTo = start + Math.floor((end - start) / 2);
-    } while (true);
+    }
 
     console.log("Signing transaction...");
     res = await client.walletProcessPsbt(res.psbt);
