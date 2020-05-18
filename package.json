@@ -1,6 +1,6 @@
 {
   "name": "consolidate-utxo",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Tool which helps consolidate your unspent transactions outputs",
   "main": "cutxo.js",
   "scripts": {
