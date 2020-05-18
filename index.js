@@ -83,8 +83,8 @@ const parseArgs = () => {
 
     console.info();
     console.info("Number of inputs:", tx.inputsUsed);
-    console.info("Inputs total amount:", tx.amount);
-    console.info("Output amount:", tx.amount - tx.fee);
+    console.info("Inputs total amount:", tx.amountInput);
+    console.info("Output amount:", tx.amountOutput);
     console.info("Fee:", tx.fee);
     console.info("Output address:", tx.address);
     console.info();

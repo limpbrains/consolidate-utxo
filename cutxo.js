@@ -78,9 +78,12 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
 
     console.log("Transaction created");
 
+    const amountOutput = new BN(amount).minus(fee).toNumber();
+
     return {
         address,
-        amount,
+        amountInput: amount,
+        amountOutput,
         fee,
         hex: res.hex,
         inputsUsed: sliceTo,

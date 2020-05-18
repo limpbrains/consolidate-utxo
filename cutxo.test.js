@@ -50,7 +50,8 @@ describe("Trades", () => {
         await client.generate(1);
 
         tx = await construct({ client, maximumAmount: 0.001, feeRate: 1 });
-        expect(tx.amount).toBe(0.003);
+        expect(tx.amountInput).toBe(0.003);
+        expect(tx.amountOutput).toBeLessThan(tx.amountInput);
         expect(typeof tx.address).toBe("string");
         expect(tx.fee).toBeLessThan(0.001);
         expect(typeof tx.hex).toBe("string");
@@ -89,8 +90,9 @@ describe("Trades", () => {
             maximumAmount: 0.001,
             feeRate: 1,
         });
-        expect(tx.amount).toBeGreaterThan(2);
-        expect(tx.amount).toBeLessThan(3);
+        expect(tx.amountInput).toBeGreaterThan(2);
+        expect(tx.amountInput).toBeLessThan(3);
+        expect(tx.amountOutput).toBeLessThan(tx.amountInput);
         expect(typeof tx.address).toBe("string");
         expect(typeof tx.fee).toBe("number");
         expect(typeof tx.hex).toBe("string");
