@@ -5,6 +5,7 @@ const BN = BigNumber.clone({ DECIMAL_PLACES: 8 });
 async function construct({ client, maximumAmount, limit, feeRate }) {
     let unspent = await client.listUnspent(1, 9999999, [], true, {
         maximumAmount,
+        maximumCount: 650,
     });
     const inputsTotal = unspent.length;
 
@@ -74,11 +75,14 @@ async function construct({ client, maximumAmount, limit, feeRate }) {
         // checking tx vsize show be below 100000
         res = await client.decodeRawTransaction(hex);
         vsize = res.vsize
-        if (vsize > 100000) {
-            end = sliceTo;
-            sliceTo = start + Math.floor((end - start) / 2);
-            continue;
-        }
+        // if (vsize > 16000000) {
+        //     end = sliceTo;
+        //     sliceTo = start + Math.floor((end - start) / 2);
+        //     continue;
+        // }
+
+        console.log(res);
+        console.log(vsize);
 
         if (sliceTo === end || end - start <= 1) {
             console.log(" success");

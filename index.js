@@ -59,6 +59,7 @@ const parseArgs = () => {
         port: options.port,
         username: options.username,
         password: options.password,
+        timeout: 10 * 60000,
     });
 
     try {
