@@ -56,6 +56,7 @@ const parseArgs = () => {
 (async () => {
     const options = parseArgs();
     const client = new Client({
+        host: options.host,
         port: options.port,
         username: options.username,
         password: options.password,
